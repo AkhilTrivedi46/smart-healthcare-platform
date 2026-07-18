@@ -1,0 +1,4 @@
+package com.hospital.patient.repository;
+
+public class repository {
+}
