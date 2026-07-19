@@ -1,8 +1,12 @@
 package com.hospital.patient.service;
 
 
-import com.hospital.patient.model.Patient;
+import com.hospital.patient.entity.Patient;
+import com.hospital.patient.repository.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,13 +14,39 @@ import java.util.List;
 @Service
 public class PatientService {
 
-    public List<Patient> getAllPatients(){
-        return Arrays.asList(
-                new Patient(1, "Akhil", 24, "Male", "Chennai", "O+"),
-                new Patient(3, "Bobby", 35, "Male", "Bangalore", "A+"),
-                new Patient(4, "Swetha", 27, "Female", "Hyderabad", "AB+"),
-                new Patient(5, "Shyam", 42, "Male", "Mumbai", "O-")
-        );
+    @Autowired
+    PatientRepository patientRepository;
 
+    public List<Patient> getAllPatients(){
+        return patientRepository.findAll();
+
+    }
+
+    public Patient getPatientById(int id){
+        return patientRepository.findById(id).orElse(null);
+    }
+
+    public Patient createPatient(Patient patient){
+        return patientRepository.save(patient);
+    }
+
+    public String updatePatient(int id, Patient patient){
+        Patient existingPatient = patientRepository.findById(id).orElse(null);
+
+        if(existingPatient != null){
+            existingPatient.setName(patient.getName());
+            existingPatient.setAge(patient.getAge());
+            existingPatient.setGender(patient.getGender());
+            existingPatient.setCity(patient.getCity());
+            existingPatient.setBloodGroup(patient.getBloodGroup());
+
+            patientRepository.save(existingPatient);
+
+            return "Updated Successfully";
+
+        }
+        else{
+            return "Patient not found";
+        }
     }
 }

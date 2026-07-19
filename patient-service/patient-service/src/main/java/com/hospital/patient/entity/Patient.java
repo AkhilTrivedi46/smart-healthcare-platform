@@ -1,12 +1,22 @@
-package com.hospital.patient.model;
+package com.hospital.patient.entity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+
+@Entity
 public class Patient {
+    @Id
     private int id;
     private String name;
     private int age;
     private String gender;
     private String city;
     private String bloodGroup;
+
+    public Patient() {
+    }
 
     public Patient(int id,String name, int age, String gender, String city, String bloodGroup) {
         this.id = id;
