@@ -49,4 +49,16 @@ public class PatientService {
             return "Patient not found";
         }
     }
+
+    public String deletePatientById(int id){
+        Patient delExistingPatient = patientRepository.findById(id).orElse(null);
+
+        if(delExistingPatient != null){
+            patientRepository.deleteById(id);
+            return "This patient is no longer available , Deleted from the records";
+        }
+        else{
+            return "Id not found";
+        }
+    }
 }
