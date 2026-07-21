@@ -1,6 +1,8 @@
 package com.hospital.patient.controller;
 
-
+import jakarta.validation.Valid;
+import com.hospital.patient.dto.PatientRequest;
+import com.hospital.patient.dto.PatientResponse;
 import com.hospital.patient.entity.Patient;
 import com.hospital.patient.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,8 @@ public class PatientController {
     }
 
     @PostMapping("/patients")
-    public Patient createUser(@RequestBody Patient patient){
-        return patientService.createPatient(patient);
+    public PatientResponse createPatient(@Valid @RequestBody PatientRequest patientRequest) {
+        return patientService.createPatient(patientRequest);
     }
 
     @PutMapping("patients/{id}")
