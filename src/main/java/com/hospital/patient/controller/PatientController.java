@@ -15,17 +15,20 @@ import java.util.List;
 @RestController
 public class PatientController {
 
-    @Autowired
-    PatientService patientService;
+    private final PatientService patientService;
 
-    @GetMapping("/patients")
-    public List<Patient> getAllPatients(){
-        return patientService.getAllPatients();
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
     }
 
-    @GetMapping("/patient/{id}")
-    public Patient getPatientById(@PathVariable  int id){
-        return patientService.getPatientById(id);
+    @GetMapping("/patients")
+    public ResponseEntity<List<Patient>> getAllPatients() {
+        return ResponseEntity.ok(patientService.getAllPatients());
+    }
+
+    @GetMapping("/patients/{id}")
+    public ResponseEntity<Patient> getPatientById(@PathVariable int id) {
+        return ResponseEntity.ok(patientService.getPatientById(id));
     }
 
     @PostMapping("/patients")
@@ -37,14 +40,17 @@ public class PatientController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("patients/{id}")
-    public String updatePatient(@PathVariable int id, @RequestBody Patient patient){
-        return patientService.updatePatient(id,patient);
+    @PutMapping("/patients/{id}")
+    public ResponseEntity<String> updatePatient(
+            @PathVariable int id,
+            @Valid @RequestBody Patient patient) {
+
+        return ResponseEntity.ok(patientService.updatePatient(id, patient));
     }
 
     @DeleteMapping("/patients/{id}")
-    public String deletePatient(@PathVariable int id){
-        return patientService.deletePatientById(id);
+    public ResponseEntity<String> deletePatient(@PathVariable int id){
+        return ResponseEntity.ok(patientService.deletePatientById(id));
     }
 
 

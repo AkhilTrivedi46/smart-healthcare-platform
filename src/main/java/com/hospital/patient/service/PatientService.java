@@ -1,6 +1,5 @@
 package com.hospital.patient.service;
 
-
 import com.hospital.patient.dto.PatientRequest;
 import com.hospital.patient.dto.PatientResponse;
 import com.hospital.patient.entity.Patient;
@@ -8,28 +7,27 @@ import com.hospital.patient.exception.PatientNotFoundException;
 import com.hospital.patient.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class PatientService {
 
-    @Autowired
-    PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
-    public List<Patient> getAllPatients(){
+    public PatientService(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
+    public List<Patient> getAllPatients() {
         return patientRepository.findAll();
-
     }
 
     public Patient getPatientById(int id) {
         return patientRepository.findById(id)
-                .orElseThrow(() -> new PatientNotFoundException(
-                        "Patient not found with id: " + id
-                ));
+                .orElseThrow(() ->
+                        new PatientNotFoundException(
+                                "Patient not found with id: " + id));
     }
 
     public PatientResponse createPatient(PatientRequest patientRequest) {
@@ -57,35 +55,34 @@ public class PatientService {
         return response;
     }
 
-    public String updatePatient(int id, Patient patient){
-        Patient existingPatient = patientRepository.findById(id).orElse(null);
+    public String updatePatient(int id, Patient patient) {
 
-        if(existingPatient != null){
-            existingPatient.setName(patient.getName());
-            existingPatient.setAge(patient.getAge());
-            existingPatient.setGender(patient.getGender());
-            existingPatient.setCity(patient.getCity());
-            existingPatient.setBloodGroup(patient.getBloodGroup());
+        Patient existingPatient = patientRepository.findById(id)
+                .orElseThrow(() ->
+                        new PatientNotFoundException(
+                                "Patient not found with id: " + id));
 
-            patientRepository.save(existingPatient);
+        existingPatient.setName(patient.getName());
+        existingPatient.setAge(patient.getAge());
+        existingPatient.setGender(patient.getGender());
+        existingPatient.setCity(patient.getCity());
+        existingPatient.setBloodGroup(patient.getBloodGroup());
 
-            return "Updated Successfully";
+        patientRepository.save(existingPatient);
 
-        }
-        else{
-            return "Patient not found";
-        }
+        return "Updated Successfully";
     }
 
-    public String deletePatientById(int id){
-        Patient delExistingPatient = patientRepository.findById(id).orElse(null);
+    public String deletePatientById(int id) {
 
-        if(delExistingPatient != null){
-            patientRepository.deleteById(id);
-            return "This patient is no longer available , Deleted from the records";
-        }
-        else{
-            return "Id not found";
-        }
+        patientRepository.findById(id)
+                .orElseThrow(() ->
+                        new PatientNotFoundException(
+                                "Patient not found with id: " + id));
+
+        patientRepository.deleteById(id);
+
+        return "Patient deleted successfully";
     }
+
 }
