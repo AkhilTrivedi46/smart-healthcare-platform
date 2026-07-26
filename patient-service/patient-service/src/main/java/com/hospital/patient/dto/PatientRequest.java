@@ -1,14 +1,25 @@
-package com.hospital.patient.model;
+package com.hospital.patient.dto;
 
-public class Patient {
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
+public class PatientRequest {
     private int id;
+    @NotBlank
     private String name;
+    @Min(1)
     private int age;
+    @NotBlank
     private String gender;
+    @NotBlank
     private String city;
+    @NotBlank
     private String bloodGroup;
 
-    public Patient(int id,String name, int age, String gender, String city, String bloodGroup) {
+    public PatientRequest() {
+    }
+
+    public PatientRequest(int id ,String name, int age, String gender, String city, String bloodGroup) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -21,44 +32,44 @@ public class Patient {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getBloodGroup() {
-        return bloodGroup;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public int getAge() {
+        return age;
+    }
+
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
 
+    public String getCity() {
+        return city;
+    }
+
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getBloodGroup() {
+        return bloodGroup;
     }
 
     public void setBloodGroup(String bloodGroup) {
@@ -67,9 +78,8 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "PatientRequest{" +
+                "name='" + name + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", city='" + city + '\'' +
